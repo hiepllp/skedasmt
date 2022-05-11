@@ -1,0 +1,218 @@
+<apex:page showHeader="false" controller="SubmitCaseController" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false" docType="html-5.0">    
+   <html>  
+     <head>  
+       <meta name="viewport" content="width=device-width, initial-scale=1"/>  
+       <title>Submit Case </title>  
+       <!-- Latest compiled and minified CSS -->  
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>  
+       <!-- Optional theme -->  
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>  
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.0/jquery.js"> </script>  
+       <!-- Latest compiled and minified JavaScript -->  
+       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>  
+       <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"/>  
+       <style>  
+         #contentLoading{  
+           width: 100%;  
+           height: 100%;  
+           top: 0px;  
+           left: 0px;  
+           position: fixed;  
+           display: block;  
+           opacity: 0.7;  
+           background-color: #fff;  
+           z-index: 11111111;  
+           text-align: center;  
+         }  
+         #contentLoading1{  
+           position: absolute;  
+           top:350px;  
+           z-index: 100;  
+         }  
+         uploadFileSizeLimit {  
+           padding-top: 4px;  
+         }  
+         span.fileSize {  
+           color: #D40000;;  
+           font-size: .9em;  
+         }  
+         .required-field{  
+           color : red;  
+           vertical-align: middle;  
+           font-size: large;  
+           font-weight: bold;  
+           padding-left: 5px;  
+           line-height:10px;  
+         }  
+         label.error{  
+           color: #a94442;  
+         }  
+       </style>   
+       <!---- Manage Loading icon here ----->  
+       <script>  
+         function loading(val){  
+           if (val) {  
+             document.getElementById('contentLoading').style.display = 'inline-block';  
+             document.getElementById('contentLoaded').style.display = 'none';  
+           }  
+           else {  
+             document.getElementById('contentLoading').style.display = 'none';  
+             document.getElementById('contentLoaded').style.display = 'inline-block';  
+           }  
+         }  
+         $(document).ready(function(){  
+          jQuery.validator.addMethod("Phone", function (phoneNum, element) {  
+             phoneNum = phoneNum.replace(/\s+/g, "");  
+             return this.optional(element) || phoneNum.length > 9 &&  
+                phoneNum.match(/^[+#*\(\)\[\]]*([0-9][ ext+-pw#*\(\)\[\]]*){6,45}$/);  
+           }, "Invalid phone number");  
+         });  
+         function validateForm(){  
+           if($('.form-horizontal').validate().form()){  
+             loading(true);  
+             return true;  
+           }  
+           else{  
+             $('.btn-submit').attr('disabled', false);  
+             return false;  
+           }  
+         }  
+       </script>     
+     </head>  
+     <body >  
+       <apex:form styleClass="form-horizontal" html-data-toggle="validator" html-role="form">  
+         <div id="contentLoaded"/>  
+         <div id="contentLoading" style="display:none;">  
+           <apex:image id="contentLoading1" styleclass="slds-spinner--medium" url="{!$Resource.Spinner}" width="100" height="100" style="top: 50%; position: fixed;" alt="Loading graphic"/>  
+         </div>            
+         <div class="container page-wrap">  
+           <div class="row">  
+             <div class="form-wrap">    
+               <apex:pageMessages id="error" />  
+               <div class="form-group has-feedback">  
+                 <label class="col-sm-3 control-label">First Name<span class="required-field">* </span></label>  
+                 <div class="col-sm-6">  
+                   <apex:inputText styleClass="form-control" html-placeholder="First Name" html-data-rule-required="true" value="{!newCase.firstName}"/>  
+                 </div>  
+               </div>  
+               <div class="form-group has-feedback">  
+                 <label class="col-sm-3 control-label">Last Name<span class="required-field">* </span></label>  
+                 <div class="col-sm-6">  
+                   <apex:inputText styleClass="form-control" html-placeholder="Last Name" value="{!newCase.lastName}" html-data-rule-required="true"/>  
+                 </div>  
+               </div>  
+               <div class="form-group">  
+                 <label class="col-sm-3 control-label">Email<span class="required-field">* </span></label>  
+                 <div class="col-sm-6">  
+                   <apex:input type="email" html-data-error="Email address is invalid" html-placeholder="Email Address" styleClass="form-control" value="{!newCase.Email}" html-data-rule-required="true"/>  
+                 </div>  
+               </div>  
+               <div class="form-group">  
+                 <label class="col-sm-3 control-label">Phone<span class="required-field">* </span></label>  
+                 <div class="col-sm-6">  
+                   <apex:inputText styleClass="form-control Phone phoneNum" html-placeholder="Phone Number" value="{!newCase.Phone}" html-data-rule-required="true" />  
+                 </div>  
+               </div>  
+               <div class="form-group">  
+                 <label class="col-sm-3 control-label">Company</label>  
+                 <div class="col-sm-6">  
+                   <input type="text" class="form-control" ng-model="newCase.Company" />  
+                 </div>  
+               </div>  
+               <div class="form-group">  
+                 <label class="col-sm-3 control-label">Subject<span class="required-field">* </span></label>  
+                 <div class="col-sm-6">  
+                   <apex:inputText styleClass="form-control" html-placeholder="Case Subject" value="{!newCase.Subject}" html-data-rule-required="true" />  
+                 </div>  
+               </div>  
+               <div class="form-group">  
+                 <label class="col-sm-3 control-label">Description<span class="required-field">* </span></label>  
+                 <div class="col-sm-6">  
+                   <apex:inputtextarea styleClass="form-control" rows="3" html-placeholder="Description" html-data-rule-required="true" value="{!newCase.Description}"/>                    
+                 </div>  
+               </div>  
+               <div class="form-group">  
+                 <label class="col-sm-3 control-label">Attach Documents</label>  
+                 <div class="col-sm-6">  
+                   <apex:variable var="count" value="{!0}"/>  
+                   <apex:repeat value="{!attachments}" var="att">   
+                     <div style="{!IF(count != 0, 'display:none;','')}" class="attachment-box">  
+                       <div style="width:95%; display: inline-block; float:left;">  
+                         <apex:inputFile styleClass="form-control attachments" value="{!att.body}" filename="{!att.Name}"/>  
+                       </div>  
+                       <div style="display: inline-block; float: right; margin-top: 8px;">  
+                         <span class="btn-primary glyphicon glyphicon-remove-circle" aria-hidden="true" style="cursor:pointer;" onClick="removeAttachment(this)"></span>  
+                       </div>  
+                     </div>  
+                     <apex:variable var="count" value="{!count + 1}"/>  
+                   </apex:repeat>  
+                   <apex:inputText styleClass="caseIdField" value="{!caseId}" style="display:none;"/>  
+                   <div class="uploadFileSizeLimit"><span class="fileSize">Maximum file size is 20&nbsp;MB</span></div>  
+                 </div>  
+               </div>  
+               <script>  
+               </script>  
+               <div class="form-group">  
+                 <div class="col-sm-offset-3 col-sm-6">  
+                   <apex:commandButton onclick="return validateForm();" status="myStatus" action="{!submitCase}" styleClass="btn btn-primary btn-submit" value="Send Enquiry"/>  
+                 </div>  
+               </div>  
+             </div>  
+           </div>  
+         </div>  
+       </apex:form>  
+     </body>  
+     <script>  
+       function addOneMoreInput() {  
+         $('input[type=file]').change(function() {  
+           console.log($('.attachments.has-error').length);  
+           if($('.attachments.has-error').length > 0)  
+             return;  
+           //$(this).parent().parent().next().show();  
+           $($('.attachment-box:hidden')[0]).show();  
+           $(this).off('change');  
+         });  
+       }  
+       function removeAttachment(ele){  
+         $(ele).parent().parent().find('input').val('');  
+         if($('.attachment-box:visible').length > 1 ){  
+           //$(ele).parent().parent().hide();  
+         }  
+       }  
+       $(".attachments").change(function(event){  
+         var fileCount = 0;  
+         console.log('changed');  
+         if(this.files.length > 0){  
+           if(this.files[0].size > 20000000){  
+             bootbox.alert('Max allowed file size is 20 MB');  
+             $(this).addClass('has-error');  
+             this.value = "";  
+           }  
+           else if(this.files[0].name.indexOf('.exe') != -1 && this.files[0].type.indexOf('application/x') != -1){  
+             console.log(this.files[0].type);  
+             bootbox.alert('Exe files are not allowed.');  
+             $(this).addClass('has-error');  
+             this.value = "";      
+           }  
+           else if($('.attachment-box:visible')>1){  
+             $('.attachment-box:visible').each(function(){  
+               console.log($(this).find('input')[0].files.length);  
+               if($(this).find('input')[0].files.length == 0)  
+                 fileCount++;  
+             });   
+             console.log(fileCount);  
+             if(fileCount != 0)  
+               $(this).addClass('has-error');    
+             eles  
+               $(this).removeClass('has-error');  
+           }  
+           else{  
+             console.log('remove');  
+             $(this).removeClass('has-error');  
+           }  
+         }  
+       });  
+       addOneMoreInput();  
+     </script>  
+   </html>    
+ </apex:page>

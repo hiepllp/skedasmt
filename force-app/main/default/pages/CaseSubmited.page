@@ -1,0 +1,33 @@
+<apex:page showHeader="false" controller="SubmitCaseController" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false" docType="html-5.0">    
+   <html>  
+     <head>  
+       <meta name="viewport" content="width=device-width, initial-scale=1"/>  
+       <title>Submit Case </title>  
+       <!-- Latest compiled and minified CSS -->  
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>  
+       <!-- Optional theme -->  
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>  
+     </head>  
+     <body>  
+       <div class="container page-wrap">  
+         <div class="row">  
+           <div class="form-wrap">  
+             <div class="page-header">  
+              <h3>Thank you </h3>  
+             </div>  
+             <div class="row">  
+               <div class="col-md-5 col-lg-6">  
+                 <apex:outputPanel rendered="{!caseSubmitted}">  
+                   <small>Our service desk person will contact you very soon.</small>  
+                 </apex:outputPanel>  
+                 <apex:outputPanel rendered="{!NOT(caseSubmitted)}">  
+                   <small>Unable to submit your case. Please try again later.</small>  
+                 </apex:outputPanel>  
+               </div>  
+             </div>  
+           </div>  
+         </div>  
+       </div>  
+     </body>  
+   </html>    
+ </apex:page>

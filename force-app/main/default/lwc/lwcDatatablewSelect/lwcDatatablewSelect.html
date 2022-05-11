@@ -1,0 +1,10 @@
+<template>
+    <lightning-card title="Racing Ships"> 
+      <lightning-button slot="actions" label="Delete" onclick={deleteRecord}></lightning-button>
+      <div class="slds-box">
+        <lightning-datatable
+        data={boatList.data} columns={cols} key-field="Id">
+        </lightning-datatable>
+      </div>
+    </lightning-card>
+</template>
